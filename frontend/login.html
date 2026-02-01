@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Thread - Login</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body class="center">
+
+    <div class="login-box">
+        <h2>Thread</h2>
+        <p>Join the conversation</p>
+
+        <div id="recent-logins" style="margin-bottom: 20px; display: none;"></div>
+
+        <div style="margin-bottom: 10px; color: var(--text-secondary); font-size: 13px;">Choose your avatar</div>
+        <div class="avatar-grid" id="avatar-grid">
+            <!-- Emulated by JS below -->
+        </div>
+        <input type="hidden" id="selected-avatar" value="👤">
+
+        <input id="username" placeholder="Enter your username" autocomplete="off">
+        <button onclick="login()">Enter Thread</button>
+    </div>
+
+    <script>
+        const avatars = ["🦊", "🐼", "🦁", "🐰", "🐸", "🐯", "🐙", "🦄", "👽", "🤖"];
+        const grid = document.getElementById("avatar-grid");
+        const hiddenInput = document.getElementById("selected-avatar");
+        let selectedEl = null;
+
+        // Load Users from Server
+        fetch("http://localhost:5000/api/users")
+            .then(res => res.json())
+            .then(data => {
+                renderUsers(data.users);
+            })
+            .catch(err => console.error("Error fetching users:", err));
+
+        function renderUsers(users) {
+            const container = document.getElementById("recent-logins");
+            if (!container) return;
+
+            if (users.length > 0) {
+                let html = '<div style="margin-bottom:10px; color:var(--text-secondary); font-size:13px;">Existing Accounts</div><div class="recent-grid">';
+                users.forEach(u => {
+                    html += `
+                        <div class="recent-card" onclick="quickLogin('${u.username}', '${u.avatar}')">
+                            <div class="recent-avatar">${u.avatar}</div>
+                            <div class="recent-name">${u.username}</div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                container.innerHTML = html;
+                container.style.display = "block";
+            } else {
+                container.style.display = "none";
+            }
+        }
+
+        // Render avatars
+        avatars.forEach((av, index) => {
+            const el = document.createElement("div");
+            el.className = "avatar-option";
+            el.innerText = av;
+
+            // Auto select first one
+            if (index === 0) {
+                el.classList.add("selected");
+                selectedEl = el;
+                hiddenInput.value = av;
+            }
+
+            el.onclick = () => {
+                if (selectedEl) selectedEl.classList.remove("selected");
+                el.classList.add("selected");
+                selectedEl = el;
+                hiddenInput.value = av;
+            };
+            grid.appendChild(el);
+        });
+
+        function login() {
+            const u = document.getElementById("username").value.trim();
+            const avatar = hiddenInput.value;
+
+            if (!u) {
+                alert("Please enter a username");
+                return;
+            }
+            performLogin(u, avatar);
+        }
+
+        function performLogin(u, avatar) {
+            // Perform Login
+
+            // Persistence Hack: We want to clear "session" data from previous tests
+            // but keep our "Recent Users".
+            localStorage.removeItem("username");
+            localStorage.removeItem("avatar");
+
+            sessionStorage.setItem("username", u);
+            sessionStorage.setItem("avatar", avatar);
+            window.location.href = "chat.html";
+        }
+
+        function quickLogin(u, avatar) {
+            performLogin(u, avatar);
+        }
+
+
+        // Init
+
+        // Enter key support
+        document.getElementById("username").addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                login();
+            }
+        });
+    </script>
+
+</body>
+
+</html>

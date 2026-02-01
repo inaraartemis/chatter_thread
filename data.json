@@ -1,0 +1,89 @@
+{
+    "users": {
+        "Arpitaaaaa": {
+            "avatar": "\ud83e\udd81"
+        },
+        "Shivam": {
+            "avatar": "\ud83d\udc7d"
+        },
+        "Arpita": {
+            "avatar": "\ud83d\udc3c"
+        },
+        "Rashmi": {
+            "avatar": "\ud83d\udc19"
+        },
+        "Saurav": {
+            "avatar": "\ud83d\udc30"
+        }
+    },
+    "groups": {
+        "hheouwencne": {
+            "members": [
+                "Shivam",
+                "Saurav",
+                "Arpita",
+                "Arpitaaaaa"
+            ],
+            "history": [
+                {
+                    "from": "Shivam",
+                    "message": "hiii",
+                    "group": "hheouwencne"
+                }
+            ],
+            "avatar": "\ud83d\udcac"
+        },
+        "my ladiessss": {
+            "members": [
+                "Arpita",
+                "Shivam",
+                "Saurav",
+                "Rashmi"
+            ],
+            "history": [
+                {
+                    "from": "Saurav",
+                    "message": "hello",
+                    "group": "my ladiessss"
+                },
+                {
+                    "from": "Rashmi",
+                    "message": "hiii",
+                    "group": "my ladiessss"
+                },
+                {
+                    "from": "Arpita",
+                    "message": "hiiioooo",
+                    "group": "my ladiessss"
+                }
+            ],
+            "avatar": "\ud83d\udcbc"
+        }
+    },
+    "private_messages": {
+        "Arpita|Arpitaaaaa": [
+            {
+                "from": "Arpitaaaaa",
+                "message": "hiiii"
+            }
+        ],
+        "Arpita|Shivam": [
+            {
+                "from": "Arpita",
+                "message": "hiiiii"
+            }
+        ],
+        "Arpita|Rashmi": [
+            {
+                "from": "Arpita",
+                "message": "hiii babyyy"
+            }
+        ],
+        "Rashmi|Saurav": [
+            {
+                "from": "Rashmi",
+                "message": "my gandarrrrrrrrrrrrrrr"
+            }
+        ]
+    }
+}

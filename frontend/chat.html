@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Thread</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Socket.IO Client -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+
+<body>
+
+    <div class="app">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>Thread</h3>
+                <div class="header-controls">
+                    <div id="self-user" class="self-user"></div>
+                    <button onclick="logout()" class="logout-btn" title="Logout">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                            <path
+                                d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4a1 1 0 0 1 0 2H5v14h4a1 1 0 0 1 0 2zm7-10V7l5 5-5 5v-4h-8v-2h8z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="search-container">
+                <input id="search-input" class="search-input" placeholder="Search chats..." oninput="filterLists()">
+            </div>
+
+            <div class="section-title">
+                Groups
+                <button onclick="openGroupModal()" class="small-btn" title="Create Group">+</button>
+            </div>
+            <ul id="groups"></ul>
+
+            <div class="section-title">Online Members</div>
+            <ul id="users"></ul>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="chat">
+            <div id="chat-header" class="chat-header">
+                <span class="avatar">💬</span>
+                <span>Select a chat to start messaging</span>
+            </div>
+
+            <div id="messages" class="messages-container"></div>
+
+            <div class="input-area">
+                <input id="msg" placeholder="Type a message..." onkeypress="handleKeyPress(event)" autocomplete="off">
+                <button onclick="send()" class="send-btn">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Group Modal -->
+    <div id="group-modal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Create New Group</h3>
+                <button onclick="closeGroupModal()" class="small-btn">✕</button>
+            </div>
+            <div class="modal-body">
+
+                <div style="margin-bottom: 15px;">
+                    <div style="margin-bottom: 5px; color: var(--text-secondary); font-size: 13px;">Group Icon</div>
+                    <div class="avatar-scroll-container" id="group-avatar-grid">
+                        <!-- Populated by JS -->
+                    </div>
+                    <input type="hidden" id="selected-group-avatar" value="📢">
+                </div>
+
+                <input id="new-group-name" placeholder="Group Name"
+                    style="width: 100%; padding: 10px; margin-bottom: 15px; background: var(--input-bg); border: 1px solid var(--border-color); color: white; border-radius: 5px;">
+
+                <div style="margin-bottom: 10px; color: var(--text-secondary); font-size: 13px;">Select Members:</div>
+                <div id="user-select-list" class="user-select-list">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeGroupModal()" class="btn-secondary">Cancel</button>
+                <button onclick="createGroup()" class="btn-primary">Create</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

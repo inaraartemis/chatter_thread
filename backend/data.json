@@ -1,0 +1,26 @@
+{
+    "users": {},
+    "groups": {
+        "Somethinggg": {
+            "members": [
+                "Shanti",
+                "Saroj",
+                "Sunita"
+            ],
+            "history": [],
+            "avatar": "\ud83d\udce3"
+        }
+    },
+    "private_messages": {
+        "Arpita|Shanti": [
+            {
+                "from": "Arpita",
+                "message": "hello"
+            },
+            {
+                "from": "Shanti",
+                "message": "heyoooo"
+            }
+        ]
+    }
+}
