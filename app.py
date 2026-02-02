@@ -7,7 +7,9 @@ from backend import database
 
 # ================== APP SETUP ==================
 
-app = Flask(__name__)
+# ================== APP SETUP ==================
+
+app = Flask(__name__, static_folder="frontend", static_url_path="")
 CORS(app)
 
 socketio = SocketIO(
@@ -90,7 +92,7 @@ load_data()
 
 @app.route("/")
 def index():
-    return "Chat Server Running"
+    return app.send_static_file("login.html")
 
 @app.route("/api/users")
 def get_users():
