@@ -32,7 +32,7 @@
         let selectedEl = null;
 
         // Load Users from Server
-        fetch("http://localhost:5000/api/users")
+        fetch("https://YOUR-RENDER-URL.onrender.com/api/users")
             .then(res => res.json())
             .then(data => {
                 renderUsers(data.users);
