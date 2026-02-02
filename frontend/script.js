@@ -3,7 +3,7 @@ const myAvatar = sessionStorage.getItem("avatar") || "👤";
 
 if (!username) window.location = "login.html";
 
-const socket = io("https://YOUR-RENDER-URL.onrender.com", {
+const socket = io({
     reconnection: true,
     reconnectionAttempts: Infinity,
     reconnectionDelay: 1000,
