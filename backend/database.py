@@ -1,7 +1,11 @@
 import sqlite3
 import datetime
+import os
 
-DB_FILE = "users.db"
+# Use absolute path relative to this file to ensure we always find the same DB
+# regardless of where the app is run from.
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_FILE = os.path.join(BASE_DIR, "users.db")
 
 def get_db():
     conn = sqlite3.connect(DB_FILE)
