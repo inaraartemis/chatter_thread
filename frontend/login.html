@@ -32,12 +32,47 @@
         let selectedEl = null;
 
         // Load Users from Server
-        fetch("https://YOUR-RENDER-URL.onrender.com/api/users")
-            .then(res => res.json())
-            .then(data => {
-                renderUsers(data.users);
-            })
-            .catch(err => console.error("Error fetching users:", err));
+        // Cold Start / Inactivity Handling
+        const API_URL = "https://YOUR-RENDER-URL.onrender.com/api/users";
+        const STATUS_MSG = document.createElement("div");
+        STATUS_MSG.style.cssText = "margin-bottom: 20px; color: var(--accent); font-size: 14px; display: none;";
+        STATUS_MSG.innerText = "Waking up server... (this may take up to 60s)";
+
+        const loginBox = document.querySelector(".login-box");
+        loginBox.insertBefore(STATUS_MSG, loginBox.children[2]); // Insert after title/subtitle
+
+        let startTime = Date.now();
+        let notified = false;
+
+        function fetchUsers() {
+            fetch(API_URL)
+                .then(res => res.json())
+                .then(data => {
+                    STATUS_MSG.style.display = "none";
+                    renderUsers(data.users);
+                })
+                .catch(err => {
+                    const elapsed = (Date.now() - startTime) / 1000;
+
+                    // Rule: Report waking up if delayed (e.g., > 2s)
+                    if (elapsed > 2 && !notified) {
+                        STATUS_MSG.style.display = "block";
+                        notified = true;
+                    }
+
+                    // Rule: No errors for first 60s
+                    if (elapsed < 60) {
+                        // Silent retry
+                        setTimeout(fetchUsers, 2000);
+                    } else {
+                        STATUS_MSG.style.color = "#f15c6d";
+                        STATUS_MSG.innerText = "Server unreachable. Please try again later.";
+                        console.error("Error fetching users:", err);
+                    }
+                });
+        }
+
+        fetchUsers();
 
         function renderUsers(users) {
             const container = document.getElementById("recent-logins");

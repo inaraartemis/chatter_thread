@@ -3,7 +3,14 @@ const myAvatar = sessionStorage.getItem("avatar") || "👤";
 
 if (!username) window.location = "login.html";
 
-const socket = io("https://YOUR-RENDER-URL.onrender.com");
+const socket = io("https://YOUR-RENDER-URL.onrender.com", {
+    reconnection: true,
+    reconnectionAttempts: Infinity,
+    reconnectionDelay: 1000,
+    reconnectionDelayMax: 5000,
+    timeout: 20000,
+    autoConnect: true
+});
 
 let activeType = null;
 let activeTarget = null;
@@ -18,8 +25,23 @@ const groupAvatars = ["📢", "📣", "💬", "💼", "🎮", "⚽", "🎵", "�
 document.getElementById("self-user").innerHTML = `<span class="avatar">${myAvatar}</span> ${username}`;
 
 // --- Socket Events ---
+let connectionStartTime = Date.now();
+const CONNECTION_MSG = document.createElement("div");
+CONNECTION_MSG.style.cssText = "position:fixed; top:10px; left:50%; transform:translateX(-50%); background:var(--header-bg); padding:10px 20px; border-radius:30px; box-shadow:0 4px 10px rgba(0,0,0,0.5); z-index:9999; color:var(--accent); font-weight:bold; display:none; animation: popIn 0.3s ease-out;";
+CONNECTION_MSG.innerText = "Connecting...";
+document.body.appendChild(CONNECTION_MSG);
+
+socket.on("connect_error", (err) => {
+    const elapsed = (Date.now() - connectionStartTime) / 1000;
+    if (elapsed > 2) {
+        CONNECTION_MSG.style.display = "block";
+        CONNECTION_MSG.innerText = (elapsed > 10) ? "Waking up server... please wait" : "Connecting...";
+    }
+});
+
 socket.on("connect", () => {
     console.log("Connected to server");
+    CONNECTION_MSG.style.display = "none";
     socket.emit("login", { username: username, avatar: myAvatar });
 });
 
